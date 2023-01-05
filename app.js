@@ -1,8 +1,6 @@
 import colors from 'colors';
 
-
-//import { mostrarMenu, pausa } from './helpers/mensaje.js';
-// import * as inquirer from './helpers/inquirer.js';
+import { guardarDB, leerDB } from './helpers/interaccionDB.js';
 import {
     inquirerMenu, pausa, leerInput
 } from './helpers/inquirer.js';
@@ -13,9 +11,12 @@ console.clear();
 const main = async() => {
     let opt = '';
     const tareas = new Tareas();
+
+    const tareasDB = leerDB();
+    if(tareasDB){
+        tareas.cargarTareasFromArray(tareasDB);
+    }
     do{
-        // opt = await mostrarMenu();
-        // opt = await inquirer.inquirerMenu(); // This for when you use import * as ...
         opt = await inquirerMenu();
 
         switch(opt){
@@ -25,15 +26,21 @@ const main = async() => {
                 tareas.crearTarea(desc);
             break;
             case '2':
-                console.log(tareas._listado);
+                tareas.listadoCompleto();
+            break;
+            case '3':
+                tareas.listarPendientesCompletadas(true);
+            break;
+            case '4':
+                tareas.listarPendientesCompletadas(false);
             break;
         }
+
+        guardarDB(tareas.listadoArr);
 
         if(opt !== '0') await pausa();
 
     }while(opt !== '0');
-    
-    //pausa();
 }
 
 main();
