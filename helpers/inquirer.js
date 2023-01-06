@@ -1,6 +1,5 @@
 import inquirer from 'inquirer';
 import colors from 'colors';
-import { validate } from 'uuid';
 
 
 const inquirerMenu = async() => {
@@ -12,7 +11,7 @@ const inquirerMenu = async() => {
             choices: [
                 {
                     value: '1',
-                    name: `${'1.'.green} Crear lista`
+                    name: `${'1.'.green} Crear tarea`
                 },
                 {
                     value: '2',
@@ -89,7 +88,7 @@ const leerInput = async(message) => {
 const listadoTareasBorrar = async(tareas = []) => {
 
     const choices = tareas.map((tarea, i) => {
-        const idx = `${i + 1}.`.green;
+        const idx = colors.green(`${i + 1}.`);
         return {
             value: tarea.id,
             name: `${idx} ${tarea.desc}`
